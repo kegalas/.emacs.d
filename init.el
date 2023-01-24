@@ -186,6 +186,59 @@
   :if window-system
   :hook (company-mode . company-box-mode))
 
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l"
+	lsp-file-watch-threshold 500)
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  :commands (lsp lsp-deferred)
+  :config
+    (setq lsp-headerline-breadcrumb-enable t))
+
+(use-package lsp-ui
+  :ensure t
+  :config
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions) ; M-.
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)   ; M-?
+  (setq lsp-ui-doc-position 'top))
+
+(use-package lsp-ivy
+  :ensure t
+  :after (lsp-mode))
+
+(use-package projectile
+  :ensure t
+  :bind (("C-c p" . projectile-command-map))
+  :config
+  (setq projectile-mode-line "Projectile")
+  (setq projectile-track-known-projects-automatically nil))
+
+(use-package counsel-projectile
+  :ensure t
+  :after (projectile)
+  :init (counsel-projectile-mode))
+
+(use-package magit
+  :ensure t)
+
+(use-package neotree
+  :ensure t
+  :bind (("<f8>" . 'neotree-toggle)))
+
+(use-package c++-mode
+  :functions 			; suppress warnings
+  c-toggle-hungry-state
+  :hook
+  (c-mode . lsp-deferred)
+  (c++-mode . lsp-deferred)
+  (c++-mode . c-toggle-hungry-state))
+
+(use-package all-the-icons
+  :ensure t
+  :if (display-graphic-p))
+
 
 ;; Theme
 
@@ -194,21 +247,9 @@
 
 ;; Other
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("b54bf2fa7c33a63a009f249958312c73ec5b368b1094e18e5953adb95ad2ec3a" "4c56af497ddf0e30f65a7232a8ee21b3d62a8c332c6b268c81e9ea99b11da0d3" default))
- '(package-selected-packages
-   '(gnu-elpa gnu-elpa-keyring-update undo-tree solarized-theme mwim use-package good-scroll)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 (provide 'init)
 

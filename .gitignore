@@ -1,3 +1,9 @@
 *.~undo-tree~
 /auto-save-list
 /elpa
+/.cache
+/transient
+/amx-items
+/projectile-bookmarks.eld
+/custom.el
+/.lsp-session-v1
