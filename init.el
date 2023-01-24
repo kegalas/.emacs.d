@@ -63,11 +63,15 @@
 (global-set-key (kbd "M-p") 'previous-ten-lines)
 (global-set-key (kbd "C-j") nil)
 
-;; Font setting, deal with the display error of Chinese word
+;; Font, coding system setting
 
-(set-fontset-font "fontset-default"
-'unicode '("微软雅黑" . "unicode-bmp"))
+(set-frame-font "JetBrains Mono-14" t t)
 
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8-unix)
+
+(set-terminal-coding-system 'utf-8-unix) ; do this especially on Windows, else python output problem
 
 ;; ELPA,MELPA setting
 
