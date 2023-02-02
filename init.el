@@ -45,7 +45,8 @@
 (add-to-list 'default-frame-alist '(height . 45)); Set default height
 (setq-default tab-width 4)                       ; Set tab width to 4
 (defvaralias 'c-basic-offset 'tab-width)         ; Set tab width in c or c-like language like c++, java
-										
+
+
 ;; Key bind
 
 ;(global-set-key (kbd "RET") 'newline-and-indent)
@@ -74,6 +75,7 @@
 
 (set-terminal-coding-system 'utf-8-unix) ; do this especially on Windows, else python output problem
 
+
 ;; ELPA,MELPA setting
 
 (require 'package)
@@ -81,6 +83,27 @@
                          ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/")
                          ("nongnu" . "http://mirrors.ustc.edu.cn/elpa/nongnu/")))
 (package-initialize)
+
+
+;; Settings for ICPC
+
+(defun file-name-only ()
+  "Get the current buffer file name without directory."
+  (file-name-nondirectory (buffer-name)))
+
+(defun file-name-only-noext ()
+  "Get the currennt buffer file name without directory and extension."
+  (file-name-sans-extension (file-name-only)))
+
+(defun icpc-compile ()
+  "Compile only one C++ file.  Just like code-runner in vscode."
+  (interactive)
+  (compile (concat "g++ "
+				  (file-name-only)
+                                  " -o "
+				  (file-name-only-noext))))
+
+(global-set-key (kbd "C-c c") 'icpc-compile)
 
 
 ;; Package
@@ -243,6 +266,11 @@
 (use-package all-the-icons
   :ensure t
   :if (display-graphic-p))
+
+
+(use-package grip-mode ; pip install --user grip
+  :ensure t
+  :hook ((markdown-mode org-mode) . grip-mode))
 
 
 ;; Theme
