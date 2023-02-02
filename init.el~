@@ -1,2 +1,0 @@
-(set-fontset-font "fontset-default"
-'unicode '("微软雅黑" . "unicode-bmp"))
