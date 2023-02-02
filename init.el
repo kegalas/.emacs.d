@@ -44,7 +44,6 @@
 (add-to-list 'default-frame-alist '(width . 90)) ; Set default width
 (add-to-list 'default-frame-alist '(height . 45)); Set default height
 
-
 ;; Key bind
 
 (global-set-key (kbd "RET") 'newline-and-indent)
