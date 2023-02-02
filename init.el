@@ -43,11 +43,12 @@
 ;(setq display-line-numbers-type 'relative)      ; Show relative line number
 (add-to-list 'default-frame-alist '(width . 90)) ; Set default width
 (add-to-list 'default-frame-alist '(height . 45)); Set default height
-
-
+(setq-default tab-width 4)                       ; Set tab width to 4
+(defvaralias 'c-basic-offset 'tab-width)         ; Set tab width in c or c-like language like c++, java
+										
 ;; Key bind
 
-(global-set-key (kbd "RET") 'newline-and-indent)
+;(global-set-key (kbd "RET") 'newline-and-indent)
 
 (defun next-ten-lines()
   "Move cursor to next 10 lines."
@@ -232,7 +233,7 @@
   :bind (("<f8>" . 'neotree-toggle)))
 
 (use-package c++-mode
-  :functions 			; suppress warnings
+  :functions
   c-toggle-hungry-state
   :hook
   (c-mode . lsp-deferred)
