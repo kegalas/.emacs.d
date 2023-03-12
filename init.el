@@ -44,6 +44,7 @@
 (add-to-list 'default-frame-alist '(width . 90)) ; Set default width
 (add-to-list 'default-frame-alist '(height . 45)); Set default height
 (setq-default tab-width 4)                       ; Set tab width to 4
+(setq-default indent-tabs-mode nil)              ; Use spaces instead of tabs
 (defvaralias 'c-basic-offset 'tab-width)         ; Set tab width in c or c-like language like c++, java
 
 
@@ -61,9 +62,15 @@
   (interactive)
   (previous-line 10))
 
+(defun type-four-spaces()
+  "In Emacs,<tab> is bound toindent-for-tab-command,I use this to type 4 spaces."
+  (interactive)
+  (insert "    "))
+
 (global-set-key (kbd "M-n") 'next-ten-lines)
 (global-set-key (kbd "M-p") 'previous-ten-lines)
 (global-set-key (kbd "C-j") nil)
+(global-set-key (kbd "C-<tab>") 'type-four-spaces)
 
 ;; Font, coding system setting
 
