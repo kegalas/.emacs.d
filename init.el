@@ -41,8 +41,8 @@
 (when (display-graphic-p) (toggle-scroll-bar -1)); Close the scroll bar
 ;(savehist-mode 1)                               ; Open buffer history
 ;(setq display-line-numbers-type 'relative)      ; Show relative line number
-(add-to-list 'default-frame-alist '(width . 90)) ; Set default width
-(add-to-list 'default-frame-alist '(height . 45)); Set default height
+(add-to-list 'default-frame-alist '(width . 70)) ; Set default width
+(add-to-list 'default-frame-alist '(height . 35)); Set default height
 (setq-default tab-width 4)                       ; Set tab width to 4
 (setq-default indent-tabs-mode nil)              ; Use spaces instead of tabs
 (defvaralias 'c-basic-offset 'tab-width)         ; Set tab width in c or c-like language like c++, java
@@ -63,7 +63,7 @@
   (previous-line 10))
 
 (defun type-four-spaces()
-  "In Emacs,<tab> is bound toindent-for-tab-command,I use this to type 4 spaces."
+  "In Emacs,<tab> is bound to indent-for-tab-command,I use this to type 4 spaces."
   (interactive)
   (insert "    "))
 
@@ -74,7 +74,7 @@
 
 ;; Font, coding system setting
 
-(set-frame-font "JetBrains Mono-14" t t)
+(set-frame-font "JetBrains Mono-16" t t)
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
@@ -128,6 +128,10 @@
   :bind
   ("C-a" . mwim-beginning-of-code-or-line)
   ("C-e" . mwim-end-of-code-or-line))
+
+(use-package all-the-icons
+  :if (display-graphic-p)) ; After installion, restart emacs and use M-x all-the-icons-install-fonts.
+                           ; And you need to install the fonts manually in Windows.
 
 (use-package counsel
   :ensure t)
@@ -184,12 +188,16 @@
   :ensure t
   :config
   (setq dashboard-banner-logo-title "Welcome to Emacs!")
-  ;; (setq dashboard-projects-backend 'projectile)
+  (setq dashboard-projects-backend 'projectile)
   (setq dashboard-startup-banner 'official)
   (setq dashboard-items '((recents  . 5)
 			  (bookmarks . 5)
-			  (projects . 10)))
+			  (projects . 7)))
   (dashboard-setup-startup-hook))
+
+(use-package yasnippet
+  :ensure t
+  :init (yas-global-mode 1))
 
 (use-package highlight-symbol
   :ensure t
@@ -214,12 +222,16 @@
   (setq company-idle-delay 0.0)
   (setq company-show-numbers t)
   (setq company-selection-wrap-around t)
-  (setq company-transformers '(company-sort-by-occurrence)))
+  (setq company-transformers '(company-sort-by-occurrence))
+  (setq company-text-icons-add-background 1)
+  (setq company-format-margin-function 'company-text-icons-margin))
 
-(use-package company-box
-  :ensure t
-  :if window-system
-  :hook (company-mode . company-box-mode))
+;(use-package company-box
+;  :ensure t
+;  :if window-system
+;  :hook (company-mode . company-box-mode)
+;  :init
+;  (setq company-box-icons-alist 'company-box-icons-all-the-icons))
 
 (use-package lsp-mode
   :ensure t
@@ -230,7 +242,8 @@
   (lsp-mode . lsp-enable-which-key-integration)
   :commands (lsp lsp-deferred)
   :config
-    (setq lsp-headerline-breadcrumb-enable t))
+  (setq lsp-headerline-breadcrumb-enable t)
+  (setq lsp-idle-delay 0.0))
 
 (use-package lsp-ui
   :ensure t
@@ -260,24 +273,27 @@
 
 (use-package neotree
   :ensure t
-  :bind (("<f8>" . 'neotree-toggle)))
+  :bind ("<f8>" . 'neotree-toggle)
+  :config
+  (setq projectile-switch-project-action 'neotree-projectile-action)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (setq neo-autorefresh 1))
 
 (use-package c++-mode
   :functions
   c-toggle-hungry-state
   :hook
-  (c-mode . lsp-deferred)
+  (c-mode . lsp-deferred) ; when using lsp for c++, clangd is needed.
   (c++-mode . lsp-deferred)
   (c++-mode . c-toggle-hungry-state))
-
-(use-package all-the-icons
-  :ensure t
-  :if (display-graphic-p))
-
 
 (use-package grip-mode ; pip install --user grip
   :ensure t
   :hook ((markdown-mode org-mode) . grip-mode))
+
+(use-package powerline
+  :ensure t
+  :init (powerline-default-theme))
 
 
 ;; Theme
@@ -286,6 +302,11 @@
 
 
 ;; Other
+
+(defun my/disable-line-numbers (&optional dummy)
+    (display-line-numbers-mode -1))
+
+(add-hook 'neo-after-create-hook 'my/disable-line-numbers) ; disable the line numbers in neotree
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (when (file-exists-p custom-file)
