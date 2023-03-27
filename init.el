@@ -74,7 +74,16 @@
 
 ;; Font, coding system setting
 
-(set-frame-font "JetBrains Mono-16" t t)
+(set-fontset-font "fontset-default" 'unicode "Jetbrains Mono-16")
+(set-fontset-font "fontset-startup" 'unicode "Jetbrains Mono-16")
+(set-fontset-font "fontset-standard" 'unicode "Jetbrains Mono-16")
+(set-fontset-font "fontset-default" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
+(set-fontset-font "fontset-startup" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
+(set-fontset-font "fontset-standard" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
+; this means when jetbrains mono doesn't have the character, noto mono will be the fallback font
+; in this way we can display chinese character
+; https://github.com/notofonts/noto-cjk/releases/tag/Sans2.004/  use the monospace version
+; https://www.jetbrains.com/lp/mono/
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
@@ -180,9 +189,13 @@
   (prog-mode . flycheck-mode))
 
 (use-package solarized-theme
+  
   :ensure t
   :config
   (setq solarized-use-more-italic t))
+
+(use-package ayu-theme
+  :ensure t)
 
 (use-package dashboard
   :ensure t
@@ -287,19 +300,17 @@
   (c++-mode . lsp-deferred)
   (c++-mode . c-toggle-hungry-state))
 
-(use-package grip-mode ; pip install --user grip
-  :ensure t
-  :hook ((markdown-mode org-mode) . grip-mode))
-
 (use-package powerline
   :ensure t
   :init (powerline-default-theme))
 
+(use-package yasnippet-snippets
+  :ensure t)
 
 ;; Theme
 
-(load-theme 'solarized-light t)
-
+;(load-theme 'solarized-light t)
+(load-theme 'ayu-light t)
 
 ;; Other
 
