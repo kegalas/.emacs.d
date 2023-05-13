@@ -307,10 +307,19 @@
 (use-package yasnippet-snippets
   :ensure t)
 
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown"))
+
+(use-package texfrag
+  :ensure t)
+
 ;; Theme
 
 ;(load-theme 'solarized-light t)
 (load-theme 'ayu-light t)
+
 
 ;; Other
 
