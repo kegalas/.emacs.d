@@ -19,8 +19,8 @@
 
 ;; Adjust garbage collection thresholds during startup, and thereafter
 
-(let ((normal-gc-cons-threshold (* 20 1024 1024))
-      (init-gc-cons-threshold (* 128 1024 1024)))
+(let ((normal-gc-cons-threshold (* 20 1024 768))
+      (init-gc-cons-threshold (* 128 1024 768)))
   (setq gc-cons-threshold init-gc-cons-threshold)
   (add-hook 'emacs-startup-hook
             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
@@ -55,15 +55,15 @@
 (defun next-ten-lines()
   "Move cursor to next 10 lines."
   (interactive)
-  (next-line 10))
+  (forward-line 10))
 
 (defun previous-ten-lines()
   "Move cursor to previous 10 lines."
   (interactive)
-  (previous-line 10))
+  (forward-line -10))
 
 (defun type-four-spaces()
-  "In Emacs,<tab> is bound to indent-for-tab-command,I use this to type 4 spaces."
+  "In Emacs,<tab> is bound to 'indent-for-tab-command',I use this to type 4 spaces."
   (interactive)
   (insert "    "))
 
@@ -95,9 +95,9 @@
 ;; ELPA,MELPA setting
 
 (require 'package)
-(setq package-archives '(("gnu" . "http://mirrors.ustc.edu.cn/elpa/gnu/")
-                         ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/")
-                         ("nongnu" . "http://mirrors.ustc.edu.cn/elpa/nongnu/")))
+(setq package-archives '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+                         ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
 (package-initialize)
 
 
@@ -189,7 +189,6 @@
   (prog-mode . flycheck-mode))
 
 (use-package solarized-theme
-  
   :ensure t
   :config
   (setq solarized-use-more-italic t))
@@ -314,6 +313,13 @@
 
 (use-package texfrag
   :ensure t)
+
+(use-package goto-chg
+  :ensure t)
+
+(use-package evil
+  :ensure t
+  :init (evil-mode))
 
 ;; Theme
 
