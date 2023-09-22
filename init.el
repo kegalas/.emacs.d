@@ -299,6 +299,14 @@
   (c++-mode . lsp-deferred)
   (c++-mode . c-toggle-hungry-state))
 
+(use-package lsp-pyright ; pip install pyright
+  :ensure t
+  :config
+  :hook
+  (python-mode . (lambda ()
+                 (require 'lsp-pyright
+                 (lsp-deferred)))))
+
 (use-package powerline
   :ensure t
   :init (powerline-default-theme))
