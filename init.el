@@ -19,8 +19,8 @@
 
 ;; Adjust garbage collection thresholds during startup, and thereafter
 
-(let ((normal-gc-cons-threshold (* 20 1024 768))
-      (init-gc-cons-threshold (* 128 1024 768)))
+(let ((normal-gc-cons-threshold (* 20 1024 1024))
+      (init-gc-cons-threshold (* 128 1024 1024)))
   (setq gc-cons-threshold init-gc-cons-threshold)
   (add-hook 'emacs-startup-hook
             (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
@@ -74,16 +74,22 @@
 
 ;; Font, coding system setting
 
-(set-fontset-font "fontset-default" 'unicode "Jetbrains Mono-16")
-(set-fontset-font "fontset-startup" 'unicode "Jetbrains Mono-16")
-(set-fontset-font "fontset-standard" 'unicode "Jetbrains Mono-16")
-(set-fontset-font "fontset-default" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
-(set-fontset-font "fontset-startup" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
-(set-fontset-font "fontset-standard" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
-; this means when jetbrains mono doesn't have the character, noto mono will be the fallback font
-; in this way we can display chinese character
-; https://github.com/notofonts/noto-cjk/releases/tag/Sans2.004/  use the monospace version
-; https://www.jetbrains.com/lp/mono/
+(cond ((display-graphic-p)
+  ; When using graphical emacs
+  (set-fontset-font "fontset-default" 'unicode "Jetbrains Mono-16")
+  (set-fontset-font "fontset-startup" 'unicode "Jetbrains Mono-16")
+  (set-fontset-font "fontset-standard" 'unicode "Jetbrains Mono-16")
+  (set-fontset-font "fontset-default" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
+  (set-fontset-font "fontset-startup" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
+  (set-fontset-font "fontset-standard" 'unicode "Noto Sans Mono CJK SC-16" nil 'append)
+  ; this means when jetbrains mono doesn't have the character, noto mono will be the fallback font
+  ; in this way we can display chinese character
+  ; https://github.com/notofonts/noto-cjk/releases/tag/Sans2.004/  use the monospace version
+  ; https://www.jetbrains.com/lp/mono/
+  )
+  (t
+  ; When using console emacs
+  ))
 
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
@@ -331,8 +337,15 @@
 
 ;; Theme
 
-;(load-theme 'solarized-light t)
-(load-theme 'ayu-light t)
+(cond ((display-graphic-p)
+  ; When using graphical emacs
+  ; (load-theme 'solarized-light t)
+  (load-theme 'ayu-light t)
+  )
+  (t
+  ; When using console emacs
+  ; Better to use the terminal's theme
+  ))
 
 
 ;; Other
